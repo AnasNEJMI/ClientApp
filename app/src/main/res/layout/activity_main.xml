@@ -1,0 +1,89 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/appIsConnected"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="#c33326"
+        android:textColor="#FFF"
+        android:textSize="18dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="20dp"
+        android:text="MagicBall" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/color"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:text="Color"
+            android:layout_alignBaseline="@+id/editcolor"/>
+        <EditText
+            android:id="@+id/editcolor"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/color"/>
+        <TextView
+            android:id="@+id/size"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/color"
+            android:text="size"
+            android:layout_alignBaseline="@+id/editsize"/>
+        <EditText
+            android:id="@+id/editsize"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/size"
+            android:layout_below="@+id/editcolor"/>
+        <TextView
+            android:id="@+id/shape"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/size"
+            android:text="Shape"
+            android:layout_alignBaseline="@+id/editshape"/>
+
+        <EditText
+            android:id="@+id/editshape"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/shape"
+            android:layout_below="@+id/editsize"/>
+
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btnPost"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Send a magic ball"
+        android:layout_marginTop="30dp"/>
+
+    <TextView
+        android:id="@+id/result"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="#f0fcf0"
+        android:textColor="#7b7f7a"
+        android:textSize="18dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="30dp"
+        android:paddingRight="120dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+
+        android:text="result" />
+
+</LinearLayout>
