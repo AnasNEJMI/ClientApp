@@ -30,7 +30,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 
-public class MainActivity extends Activity implements View.OnClickListener{
+public class MainActivity extends Activity{
 
 
     TextView appIsConnected, result;
@@ -52,25 +52,46 @@ public class MainActivity extends Activity implements View.OnClickListener{
         editshape = (EditText) findViewById(R.id.editshape);
         btnPost = (Button) findViewById(R.id.btnPost);
 
+        MagicBall magic= new MagicBall();
+
+        magic.setColor(editcolor.getText().toString());
+        magic.setSize(editsize.getText().toString());
+        magic.setShape(editshape.getText().toString());
+
+        //Set the background of "MagicBall" to green is connected
         if (appIsConnected()) appIsConnected.setBackgroundColor(0xFF23B571);
 
-        btnPost.setOnClickListener((View.OnClickListener) this);
+        btnPost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                switch (v.getId())
+                {
+                    case R.id.btnPost:
+                        if(!validate())
+                            Toast.makeText(getBaseContext(),"Enter the color, the size and the shape please",Toast.LENGTH_SHORT).show();
+
+                        new HttpAsyncTask().execute("http://hmkcode.appspot.com/jsonservlet");
+                        break;
+
+                }
+            }
+        });
     }
 
     public static String POST( MagicBall magicBall) {
-        InputStream inputStream = null;
+        InputStream inputStream ;
         String result = "";
         try {
 
-            // 1. create HttpClient
+            // create HttpClient
             HttpClient httpclient = new DefaultHttpClient();
-            String url = new String("localhost:8080/hello/anas");
-            // 2. make POST request to the given URL
-            HttpPost httpPost = new HttpPost(url);
+            // make POST request to the given URL
+            HttpPost httpPost = new HttpPost("http://localhost:8080/magicball/get");
 
             String json = "";
 
-            // 3. build jsonObject
+            // build jsonObject
             JSONObject jsonObject = new JSONObject();
             jsonObject.accumulate("color", magicBall.getColor());
             jsonObject.accumulate("size", magicBall.getSize());
@@ -94,7 +115,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
 
 
 
-        // 11. return result
+
 
 
         } catch (JSONException e) {
@@ -106,6 +127,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
         } catch (IOException e) {
             e.printStackTrace();
         }
+        //  return result
 
         return result;
     }
@@ -119,30 +141,18 @@ public class MainActivity extends Activity implements View.OnClickListener{
             return false;
     }
 
-    @Override
-    public void onClick(View view) {
-
-        switch (view.getId()) {
-            case R.id.btnPost:
-                if (!validate())
-                    Toast.makeText(getBaseContext(), "Enter the color, size and shape", Toast.LENGTH_LONG).show();
-                new HttpAsyncTask().execute("http://hmkcode.appspot.com/jsonservlet");
-                break;
-        }
-    }
-
-    private class HttpAsyncTask extends AsyncTask<String, Void, String> {
+    private class HttpAsyncTask extends AsyncTask<String, String, String> {
         @Override
-        protected String doInBackground(String... urls) {
+        protected String doInBackground(String... args) {
 
             magicBall = new MagicBall();
-            magicBall.setColor(editcolor.getText().toString());
-            magicBall.setSize(editsize.getText().toString());
-            magicBall.setShape(editshape.getText().toString());
+            magicBall.setColor(args[0]);
+            magicBall.setSize(args[1]);
+            magicBall.setShape(args[2]);
 
-            return POST(urls[0],magicBall);
+            return POST(magicBall);
         }
-        // onPostExecute displays the results of the AsyncTask.
+        // Displaying the results of the AsyncTask.
         @Override
         protected void onPostExecute(String result) {
             if(!result.equals("")){
