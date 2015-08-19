@@ -85,7 +85,13 @@
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
 
-        android:text="result" />
+        android:text="" />
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar"
+        android:layout_gravity="center_horizontal" />
 
 
 </LinearLayout>

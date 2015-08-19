@@ -37,15 +37,10 @@ public class MainActivity extends Activity{
     EditText editcolor, editsize, editshape;
     Button btnPost, btn;
 
-
-    MagicBall magicBall;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        appIsConnected = (TextView) findViewById(R.id.appIsConnected);
         result = (TextView) findViewById(R.id.result);
         editcolor = (EditText) findViewById(R.id.editcolor);
         editsize = (EditText) findViewById(R.id.editsize);
@@ -53,14 +48,13 @@ public class MainActivity extends Activity{
         btnPost = (Button) findViewById(R.id.btnPost);
 
 
-        MagicBall magic= new MagicBall();
+        final MagicBall magic= new MagicBall();
 
         magic.setColor(editcolor.getText().toString());
         magic.setSize(editsize.getText().toString());
         magic.setShape(editshape.getText().toString());
 
         //Set the background of "MagicBall" to green is connected
-        if (appIsConnected()) appIsConnected.setBackgroundColor(0xFF23B571);
 
         btnPost.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,7 +66,8 @@ public class MainActivity extends Activity{
                         if(!validate())
                             Toast.makeText(getBaseContext(),"Enter the color, the size and the shape please",Toast.LENGTH_SHORT).show();
 
-                        new HttpAsyncTask().execute("http://hmkcode.appspot.com/jsonservlet");
+                            String r = POST(magic);
+                            result.setText(r);
                         break;
 
                 }
@@ -90,7 +85,7 @@ public class MainActivity extends Activity{
             // create HttpClient
             HttpClient httpclient = new DefaultHttpClient();
             // make POST request to the given URL
-            HttpPost httpPost = new HttpPost("http://localhost:8080/magicball/get");
+            HttpPost httpPost = new HttpPost("http://localhost:8080/magicball/post");
 
             String json = "";
 
@@ -135,33 +130,7 @@ public class MainActivity extends Activity{
         return result;
     }
 
-    public boolean appIsConnected(){
-        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(MainActivity.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isConnected())
-            return true;
-        else
-            return false;
-    }
 
-    private class HttpAsyncTask extends AsyncTask<String, String, String> {
-        @Override
-        protected String doInBackground(String... args) {
-
-            magicBall = new MagicBall();
-            magicBall.setColor(args[0]);
-            magicBall.setSize(args[1]);
-            magicBall.setShape(args[2]);
-
-            return POST(magicBall);
-        }
-        // Displaying the results of the AsyncTask.
-        @Override
-        protected void onPostExecute(String result) {
-            if(!result.equals("")){
-            Toast.makeText(getBaseContext(), "Data is sent properly", Toast.LENGTH_LONG).show();}
-        }
-    }
 
     private boolean validate(){
         if(editcolor.getText().toString().trim().equals(""))
