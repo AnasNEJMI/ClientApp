@@ -51,7 +51,6 @@ public class MainActivity extends Activity{
         editsize = (EditText) findViewById(R.id.editsize);
         editshape = (EditText) findViewById(R.id.editshape);
         btnPost = (Button) findViewById(R.id.btnPost);
-        btn = (Button) findViewById(R.id.btn);
 
 
         MagicBall magic= new MagicBall();
@@ -81,19 +80,6 @@ public class MainActivity extends Activity{
             }
         });
 
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                requestData("");
-
-            }
-        });
-    }
-
-    private void requestData(String uri) {
-
-        
     }
 
     public static String POST( MagicBall magicBall) {
